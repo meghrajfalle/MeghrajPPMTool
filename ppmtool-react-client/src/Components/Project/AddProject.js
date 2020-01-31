@@ -13,11 +13,21 @@ class AddProject extends Component {
       start_date: "",
       end_date: "",
       created_At: "",
-      updated_At: ""
+      updated_At: "",
+      errors: {}
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  //life cycle hooks
+  // react may call this event if props  have not changed
+  // when we have errors
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
   }
 
   onChange(e) {
@@ -40,6 +50,7 @@ class AddProject extends Component {
   }
 
   render() {
+    const { errors } = this.state;
     return (
       <div>
         {
@@ -75,6 +86,7 @@ class AddProject extends Component {
                       value={this.setState.projectName}
                       onChange={this.onChange}
                     />
+                    <p>{errors.projectName}</p>
                   </div>
                   <div className="form-group">
                     <input
@@ -86,6 +98,7 @@ class AddProject extends Component {
                       onChange={this.onChange}
                       //disabled
                     />
+                    <p>{errors.projectIdentifier}</p>
                   </div>
                   {/*<!-- disabled for Edit Only!! remove "disabled" for the Create operation -->*/}
                   <div className="form-group">
@@ -96,6 +109,7 @@ class AddProject extends Component {
                       value={this.setState.description}
                       onChange={this.onChange}
                     ></textarea>
+                    <p>{errors.description}</p>
                   </div>
                   <h6>Start Date</h6>
                   <div className="form-group">
@@ -133,7 +147,12 @@ class AddProject extends Component {
 }
 
 AddProject.propTypes = {
-  createProject: PropTypes.func.isRequired
+  createProject: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
-export default connect(null, { createProject })(AddProject);
+const mapStateToProps = state => ({
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, { createProject })(AddProject);
