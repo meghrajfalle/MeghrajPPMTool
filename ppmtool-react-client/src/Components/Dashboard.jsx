@@ -10,6 +10,8 @@ class Dashboard extends Component {
     this.props.getProjects();
   }
   render() {
+    const { projects } = this.props.project; // ES6 object destructuring —> to extract object properties and store them in variable
+    // Here we are getting the project list
     return (
       <div className="projects">
         <div className="container">
@@ -20,7 +22,9 @@ class Dashboard extends Component {
               <CreateProjectButton />
               <br />
               <hr />
-              <ProjectItem />
+              {projects.map(project => (
+                <ProjectItem key={project.id} project={project} />
+              ))}
             </div>
           </div>
         </div>
