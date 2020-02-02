@@ -1,10 +1,17 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { deleteProject } from "../../actions/projectActions";
 
 class ProjectItem extends Component {
+  onDeleteClick = id => {
+    this.props.deleteProject(id);
+  };
+
   render() {
     const { project } = this.props; // ES6 object destructuring —> to extract object properties and store them in variable
-
+    //project prop we are getting from parent element <Dashboard> which itself gets props when mounting intially.
     return (
       // <!-- Project Item Component -->
       <div className="container">
@@ -29,11 +36,15 @@ class ProjectItem extends Component {
                     <i className="fa fa-edit pr-1"> Update Project Info</i>
                   </li>
                 </Link>
-                <a href="">
-                  <li className="list-group-item delete">
-                    <i className="fa fa-minus-circle pr-1"> Delete Project</i>
-                  </li>
-                </a>
+                <li
+                  className="list-group-item delete"
+                  onClick={this.onDeleteClick.bind(
+                    this,
+                    project.projectIdentifier
+                  )}
+                >
+                  <i className="fa fa-minus-circle pr-1"> Delete Project</i>
+                </li>
               </ul>
             </div>
           </div>
@@ -43,5 +54,8 @@ class ProjectItem extends Component {
     );
   }
 }
+ProjectItem.propTypes = {
+  deleteProject: PropTypes.func.isRequired
+};
 
-export default ProjectItem;
+export default connect(null, { deleteProject })(ProjectItem); // null because are not mapping any  state to prop
