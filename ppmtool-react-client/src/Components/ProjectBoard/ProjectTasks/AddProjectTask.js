@@ -24,6 +24,7 @@ class AddProjectTask extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    //lifecycle hooks called when new props received into the current component, in our case error will be recieved, if validation fails
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
@@ -144,7 +145,7 @@ AddProjectTask.propTypes = {
   errors: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
-  errors: state.errors
+  errors: state.errors // this is mapping state from redux to component state
 });
 
 export default connect(mapStateToProps, { addProjectTask })(AddProjectTask);

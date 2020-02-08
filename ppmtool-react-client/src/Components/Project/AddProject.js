@@ -23,8 +23,8 @@ class AddProject extends Component {
   }
 
   //life cycle hooks
-  // react may call this event if props  have not changed
-  // when we have errors
+  // not react may call this event if props  have not changed
+  // when we have errors this will be called
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
