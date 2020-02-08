@@ -14,11 +14,35 @@ class AddProjectTask extends Component {
       summary: "",
       acceptanceCriteria: "",
       status: "",
-      priority: 1,
+      priority: 0,
       dueDate: "",
       projectIdentifier: id,
       errors: {}
     };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    const newProjectTask = {
+      summary: this.state.summary,
+      acceptanceCriteria: this.state.acceptanceCriteria,
+      status: this.state.status,
+      priority: this.state.priority,
+      dueDate: this.state.dueDate
+    };
+    console.log(newProjectTask);
+
+    this.props.addProjectTask(
+      this.state.projectIdentifier,
+      newProjectTask,
+      this.props.history
+    );
   }
   render() {
     const { id } = this.props.match.params;
@@ -40,6 +64,7 @@ class AddProjectTask extends Component {
                     name="summary"
                     placeholder="Project Task summary"
                     value={this.state.value}
+                    onChange={this.onChange}
                   />
                 </div>
                 <div className="form-group">
@@ -48,6 +73,7 @@ class AddProjectTask extends Component {
                     placeholder="Acceptance Criteria"
                     name="acceptanceCriteria"
                     value={this.state.acceptanceCriteria}
+                    onChange={this.onChange}
                   ></textarea>
                 </div>
                 <h6>Due Date</h6>
@@ -57,6 +83,7 @@ class AddProjectTask extends Component {
                     className="form-control form-control-lg"
                     name="dueDate"
                     value={this.state.dueDate}
+                    onChange={this.onChange}
                   />
                 </div>
                 <div className="form-group">
@@ -64,6 +91,7 @@ class AddProjectTask extends Component {
                     className="form-control form-control-lg"
                     name="priority"
                     value={this.state.priority}
+                    onChange={this.onChange}
                   >
                     <option value={0}>Select Priority</option>
                     <option value={1}>High</option>
@@ -77,6 +105,7 @@ class AddProjectTask extends Component {
                     className="form-control form-control-lg"
                     name="status"
                     value={this.state.status}
+                    onChange={this.onChange}
                   >
                     <option value="">Select Status</option>
                     <option value="TO_DO">TO DO</option>

@@ -6,5 +6,5 @@ export const addProjectTask = (
   history
 ) => async dispatch => {
   await axios.post(`/api/backlog/${backlog_id}`, project_task);
-  history.push(`/project/projectBoard/${backlog_id}`);
+  history.push(`/projectBoard/${backlog_id}`);
 };

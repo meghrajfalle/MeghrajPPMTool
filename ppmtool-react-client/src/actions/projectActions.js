@@ -6,6 +6,8 @@ export const createProject = (project, history) => async dispatch => {
     await axios.post("/api/project", project);
     history.push("/dashboard");
     dispatch({
+      //so that validation errors of the AddProject don't remain
+      //  in memory when we goto Dashboard and see them when again when we click on updateProject
       type: GET_ERRORS,
       payload: {}
     });
