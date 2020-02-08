@@ -24,7 +24,7 @@ public class ProjectTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(updatable = false)
+    @Column(updatable = false, unique = true)  //unique - we are not going any oppurtunity to change this, but putting just to be on the safe side
     private String projectSequence;
     @NotBlank(message = "Please include a project summary")
     private String summary;
