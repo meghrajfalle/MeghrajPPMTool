@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.meghraj.ppmtool.domain.Backlog;
 import com.meghraj.ppmtool.domain.Project;
 import com.meghraj.ppmtool.domain.ProjectTask;
-import com.meghraj.ppmtool.exceptions.ProjectIdException;
 import com.meghraj.ppmtool.exceptions.ProjectNotFoundException;
 import com.meghraj.ppmtool.repositories.BacklogRepository;
 import com.meghraj.ppmtool.repositories.ProjectRepository;
@@ -54,7 +53,7 @@ public class ProjectTaskService {
             projectTask.setProjectIdentifier(projectIdentifier);
 
             //INITIAL priority when priority null
-            if (projectTask.getPriority() == null){ //In the future we need projectTask.getPriority() == 0 to handle the form
+            if (projectTask.getPriority() == 0 || projectTask.getPriority() == null){ //In the future we need projectTask.getPriority() == 0 to handle the form
                 projectTask.setPriority(3);
             }
 
