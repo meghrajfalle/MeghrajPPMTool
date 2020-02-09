@@ -27,6 +27,7 @@ public class UserService {
 
             //Make sure that password and confirmPassword match
             //We don't persist the confirmPassword
+            newUser.setConfirmPassword("");
             return userRepository.save(newUser);
 
         }catch (Exception e){ //if sql constraint violation comes it will be catched here and custom error response UserNameAlreadyExistsExceptionResponse will be thrown by the ExceptionHandler
