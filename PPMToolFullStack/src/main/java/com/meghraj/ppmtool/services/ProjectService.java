@@ -1,5 +1,7 @@
 package com.meghraj.ppmtool.services;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +9,7 @@ import com.meghraj.ppmtool.domain.Backlog;
 import com.meghraj.ppmtool.domain.Project;
 import com.meghraj.ppmtool.domain.User;
 import com.meghraj.ppmtool.exceptions.ProjectIdException;
+import com.meghraj.ppmtool.exceptions.ProjectNotFoundException;
 import com.meghraj.ppmtool.repositories.BacklogRepository;
 import com.meghraj.ppmtool.repositories.ProjectRepository;
 import com.meghraj.ppmtool.repositories.UserRepository;
@@ -49,28 +52,26 @@ public class ProjectService {
 
     }
 
-    public Project findProjectByProjectIdentifier(String projectId){
+    public Project findProjectByProjectIdentifier(String projectId, String username){
 
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
 
         if(project == null){
             throw new ProjectIdException("Project Id: '" + projectId + "' doesnot exists !");
         }
+
+        if (!project.getProjectLeader().equals(username)){
+            throw new ProjectNotFoundException("Project not Found in your account!");
+        }
+
         return project;
     }
 
-    public Iterable<Project> findAllProjects(){
-        return projectRepository.findAll();
+    public Iterable<Project> findAllProjects(String username){
+        return projectRepository.findAllByProjectLeader(username);
     }
 
-    public void deleteProjectByIdentifier (String projectId){
-
-        Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
-
-        if(project == null){
-            throw new ProjectIdException("Cannot find Project with ID: '" + projectId + "'. This Project doesnot exists !");
-        }
-
-        projectRepository.delete(project);
+    public void deleteProjectByIdentifier (String projectId,String username ){
+        projectRepository.delete(findProjectByProjectIdentifier(projectId,username));
     }
 }
