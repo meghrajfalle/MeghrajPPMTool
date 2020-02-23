@@ -1,5 +1,6 @@
 package com.meghraj.ppmtool.services;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,13 +77,10 @@ public class ProjectTaskService {
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 
-    public ProjectTask findPTByProjectSequence(String backlog_id, String pt_id){
+    public ProjectTask findPTByProjectSequence(String backlog_id, String pt_id, String username){
 
         //make sure we are searching on an existing backlog
-        Backlog backlog = backlogRepository.findByProjectIdentifier(backlog_id);
-        if(backlog == null){
-            throw new ProjectNotFoundException("Project with ID: '"+ backlog_id +"' does not exists!");
-        }
+        projectService.findProjectByProjectIdentifier(backlog_id,username);
 
         //make sure that our task exists
         ProjectTask projectTask = projectTaskRepository.findByProjectSequence(pt_id);
@@ -93,7 +91,8 @@ public class ProjectTaskService {
 
         //make sure that the backlog/project id in the path corresponds to the right project
         //if(projectTask.getProjectIdentifier().equals(backlog_id)) this condition should also work used in tutorial
-        if(projectTask != null && backlog != null && projectTask.getBacklog()!= backlog){
+        //if(projectTask != null && backlog != null && projectTask.getBacklog()!= backlog){
+            if(!projectTask.getProjectIdentifier().equals(backlog_id)){
             throw new ProjectNotFoundException("Project with Task: '"+ pt_id +"' does not exist or belong in project: "+backlog_id);
         }
 
@@ -101,10 +100,10 @@ public class ProjectTaskService {
     }
 
     //update project task
-    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlog_id, String pt_id ){
+    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlog_id, String pt_id, String username){
 
         //find existing project task
-        ProjectTask projectTask = findPTByProjectSequence(backlog_id,pt_id);
+        ProjectTask projectTask = findPTByProjectSequence(backlog_id,pt_id,username);
 
         //replace it with the updated task
         projectTask = updatedTask;
@@ -113,15 +112,15 @@ public class ProjectTaskService {
         return projectTaskRepository.save(projectTask);
     }
 
-    public void deleteByProjectSequence(String backlog_id, String pt_id ){
-        ProjectTask projectTask = findPTByProjectSequence(backlog_id,pt_id);
+    public void deleteByProjectSequence(String backlog_id, String pt_id, String username){
+       ProjectTask projectTask = findPTByProjectSequence(backlog_id,pt_id, username);
 
 //        Backlog backlog = projectTask.getBacklog();
 //        List<ProjectTask> pts = backlog.getProjectTasks(); // Gets the list of all the project tasks of this backlog
 //        pts.remove(projectTask);
 //        backlogRepository.save(backlog);
 
-        projectTaskRepository.delete(projectTask);
+       // projectTaskRepository.delete(projectTask);
     }
 
 }
