@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 
 import com.meghraj.ppmtool.domain.Backlog;
 import com.meghraj.ppmtool.domain.Project;
+import com.meghraj.ppmtool.domain.User;
 import com.meghraj.ppmtool.exceptions.ProjectIdException;
 import com.meghraj.ppmtool.repositories.BacklogRepository;
 import com.meghraj.ppmtool.repositories.ProjectRepository;
+import com.meghraj.ppmtool.repositories.UserRepository;
 
 
 @Service
@@ -19,9 +21,15 @@ public class ProjectService {
     @Autowired
     private BacklogRepository backlogRepository;
 
-    public Project saveOrUpdateProject(Project project){
+    @Autowired
+    private UserRepository userRepository;
+
+    public Project saveOrUpdateProject(Project project, String username){
 
         try {
+            User user = userRepository.findByUsername(username);
+            project.setUser(user);  //sets the relationship between user and project
+            project.setProjectLeader(user.getUsername());
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 
             if (project.getId()==null){ // We don't want to create a new Backlog object only when we are updating the existing object
