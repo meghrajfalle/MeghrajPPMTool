@@ -19,7 +19,7 @@ import Login from "./components/UserManagement/Login";
 import jwt_decode from "jwt-decode";
 import setJWTToken from "./securityUtils/setJWTToken";
 import { SET_CURRENT_USER } from "./actions/types";
-
+import { logout } from "./actions/securityActions";
 const jwtToken = localStorage.jwtToken; // local storage remains even if we refresh the page but the jwttoken goes away from redux store.
 
 if (jwtToken) {
@@ -37,8 +37,10 @@ if (jwtToken) {
 
   const currentTime = Date.now() / 1000;
   if (decoded_jwtToken.exp < currentTime) {
-    // we also need to check in frontend if the token is expired
+    // we need to check in frontend if the token is expired
     //handle logout
+    store.dispatch(logout());
+    window.location.href = "/";
     // window.location.href = "/";
   }
 }
