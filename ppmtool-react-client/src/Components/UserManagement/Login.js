@@ -15,6 +15,12 @@ class Login extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.security.validToken) {
+      // so if the value of security.validToken = true from our state then move to dashboard
+      this.props.history.push("/dashboard");
+    }
+  }
   onSubmit(e) {
     e.preventDefault();
 

@@ -16,6 +16,32 @@ import UpdateProjectTask from "./components/ProjectBoard/ProjectTasks/UpdateProj
 import Landing from "./components/Layout/Landing";
 import Register from "./components/UserManagement/Register";
 import Login from "./components/UserManagement/Login";
+import jwt_decode from "jwt-decode";
+import setJWTToken from "./securityUtils/setJWTToken";
+import { SET_CURRENT_USER } from "./actions/types";
+
+const jwtToken = localStorage.jwtToken; // local storage remains even if we refresh the page but the jwttoken goes away from redux store.
+
+if (jwtToken) {
+  setJWTToken(jwtToken); // every time an action that reloads or makes an API the token goes away from the state
+  //that's why we are setting the jwt token until it is available in the local storage. So every time we load anything
+  //from App.js using the routes all we are doing is get the token from local storage and set it. So that we don't lose the state
+  //wheneve we have a valid user
+
+  const decoded_jwtToken = jwt_decode(jwtToken);
+  store.dispatch({
+    // passing the decoded token to the redux store
+    type: SET_CURRENT_USER,
+    payload: decoded_jwtToken
+  });
+
+  const currentTime = Date.now() / 1000;
+  if (decoded_jwtToken.exp < currentTime) {
+    // we also need to check in frontend if the token is expired
+    //handle logout
+    // window.location.href = "/";
+  }
+}
 
 function App() {
   return (
