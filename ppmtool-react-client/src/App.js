@@ -21,6 +21,7 @@ import setJWTToken from "./securityUtils/setJWTToken";
 import { SET_CURRENT_USER } from "./actions/types";
 import { logout } from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/SecureRoute";
+import ErrorComponent from "./components/ErrorComponent";
 
 const jwtToken = localStorage.jwtToken; // local storage remains even if we refresh the page but the jwttoken goes away from redux store.
 
@@ -53,16 +54,17 @@ function App() {
       <Router>
         <div className="App">
           <Header />
-          {
-            //Public Routes
-          }
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
-          {
-            //Private Routes
-          }
+
           <Switch>
+            {
+              //Public Routes
+            }
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            {
+              //Private Routes
+            }
             <SecuredRoute exact path="/dashboard" component={Dashboard} />
             <SecuredRoute exact path="/addProject" component={AddProject} />
             <SecuredRoute
@@ -85,6 +87,7 @@ function App() {
               path="/updateProjectTask/:backlog_id/:pt_id"
               component={UpdateProjectTask}
             />
+            <Route component={ErrorComponent} />
           </Switch>
         </div>
       </Router>
