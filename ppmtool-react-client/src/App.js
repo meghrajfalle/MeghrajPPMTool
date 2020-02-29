@@ -22,6 +22,7 @@ import { SET_CURRENT_USER } from "./actions/types";
 import { logout } from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/SecureRoute";
 import ErrorComponent from "./components/ErrorComponent";
+import TokenExpiredPage from "./components/TokenExpiredPage";
 
 const jwtToken = localStorage.jwtToken; // local storage remains even if we refresh the page but the jwttoken goes away from redux store.
 
@@ -43,8 +44,8 @@ if (jwtToken) {
     // we need to check in frontend if the token is expired
     //handle logout
     store.dispatch(logout());
-    window.location.href = "/";
-    // window.location.href = "/";
+    window.location.href = "/tokenExpired";
+    //window.location.href = "/";
   }
 }
 
@@ -62,6 +63,7 @@ function App() {
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/tokenExpired" component={TokenExpiredPage} />
             {
               //Private Routes
             }

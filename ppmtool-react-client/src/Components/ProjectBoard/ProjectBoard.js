@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import Backlog from "./Backlog";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -16,7 +16,7 @@ class ProjectBoard extends Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.getBacklog(id);
+    this.props.getBacklog(id); //call to the API
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,28 +33,32 @@ class ProjectBoard extends Component {
     let BoardContent;
 
     const boardAlgorithm = (errors, project_tasks) => {
-      if (project_tasks.length < 1) {
-        if (errors.projectNotFound) {
-          return (
-            <div className="alert alert-danger text-center" role="alert">
-              {errors.projectNotFound}
-            </div>
-          );
-        } else if (errors.projectIdentifier) {
-          return (
-            <div className="alert alert-danger text-center" role="alert">
-              {errors.projectIdentifier}
-            </div>
-          );
-        } else {
-          return (
-            <div className="alert alert-info text-center" role="alert">
-              No Project Tasks on this board
-            </div>
-          );
-        }
+      if (errors.username === "Invalid Username") {
+        window.location.href = "/";
       } else {
-        return <Backlog project_tasks_props={project_tasks} />;
+        if (project_tasks.length < 1) {
+          if (errors.projectNotFound) {
+            return (
+              <div className="alert alert-danger text-center" role="alert">
+                {errors.projectNotFound}
+              </div>
+            );
+          } else if (errors.projectIdentifier) {
+            return (
+              <div className="alert alert-danger text-center" role="alert">
+                {errors.projectIdentifier}
+              </div>
+            );
+          } else {
+            return (
+              <div className="alert alert-info text-center" role="alert">
+                No Project Tasks on this board
+              </div>
+            );
+          }
+        } else {
+          return <Backlog project_tasks_props={project_tasks} />;
+        }
       }
     };
 
