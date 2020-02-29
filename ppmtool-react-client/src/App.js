@@ -23,7 +23,7 @@ import { logout } from "./actions/securityActions";
 import SecuredRoute from "./securityUtils/SecureRoute";
 import ErrorComponent from "./components/ErrorComponent";
 import TokenExpiredPage from "./components/TokenExpiredPage";
-
+import Footer from "./components/Layout/Footer";
 const jwtToken = localStorage.jwtToken; // local storage remains even if we refresh the page but the jwttoken goes away from redux store.
 
 if (jwtToken) {
@@ -91,6 +91,7 @@ function App() {
             />
             <Route component={ErrorComponent} />
           </Switch>
+          <Footer />
         </div>
       </Router>
     </Provider>
