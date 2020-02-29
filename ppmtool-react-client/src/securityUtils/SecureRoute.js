@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-const SecuredRoute = ({ component: Component, security, ...otherProps }) => {
+const SecuredRoute = ({ component: Component, security, ...otherProps }) => (
   <Route
     {...otherProps}
     render={props =>
@@ -13,8 +13,8 @@ const SecuredRoute = ({ component: Component, security, ...otherProps }) => {
         <Redirect to="/login" />
       )
     }
-  />;
-};
+  />
+);
 
 SecuredRoute.propTypes = {
   security: PropTypes.object.isRequired
