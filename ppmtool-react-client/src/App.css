@@ -111,6 +111,6 @@ img {
   background-color: #007bff;
   color: #fff;
 }
-.text-muted {
-  color: #fff;
+.footer-text {
+  color: #fff !important;
 }
